@@ -1,4 +1,3 @@
-/* Ocean animated background */
 body, html {
   height: 100%;
   margin: 0;
@@ -7,84 +6,51 @@ body, html {
   background: #021a34;
 }
 
-.ocean-bg {
+.background-img {
   position: fixed;
   z-index: 0;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to bottom, #021a34 0%, #196dbd 100%);
-  overflow: hidden;
+  background: url('https://upload.wikimedia.org/wikipedia/commons/f/fd/RMS_Titanic_3.jpg') center bottom/cover no-repeat;
+  /* Replace above URL with your preferred Titanic image */
+  filter: brightness(0.62) blur(1.2px);
+  width: 100vw;
+  height: 100vh;
 }
 
-.ocean-bg::before {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 180px;
-  background: repeating-linear-gradient(-45deg, #2186c4, #2186c4 60px, #1568a7 60px, #1568a7 120px);
-  opacity: 0.18;
-  animation: oceanwave 6s linear infinite alternate;
-}
-
-@keyframes oceanwave {
-  from { background-position-x: 0px; }
-  to   { background-position-x: 120px; }
-}
-
-/* Titanic ship */
-.titanic-ship {
-  position: fixed;
-  left: 50%;
-  bottom: 110px;
-  width: 260px;
-  height: 90px;
-  z-index: 1;
-  transform: translateX(-50%) rotate(-2deg);
-  pointer-events: none;
-  background: none;
-}
-.titanic-ship::after {
-  content: '';
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: url('data:image/svg+xml;utf8,<svg width="260" height="90" xmlns="http://www.w3.org/2000/svg"><g><ellipse cx="130" cy="80" rx="90" ry="13" fill="rgba(30,60,90,0.22)" /><rect x="30" y="60" width="200" height="22" rx="10" fill="%23b71c1c"/><rect x="36" y="48" width="188" height="20" rx="7" fill="%23000"/><rect x="46" y="39" width="168" height="13" rx="5" fill="%23fff"/><rect x="54" y="32" width="18" height="17" rx="4" fill="%23fff"/><rect x="188" y="32" width="18" height="17" rx="4" fill="%23fff"/><rect x="120" y="27" width="20" height="8" rx="2" fill="%23fff"/><rect x="61" y="18" width="14" height="20" rx="3" fill="%23ffd600" stroke="%23000" stroke-width="2"/><rect x="104" y="18" width="14" height="20" rx="3" fill="%23ffd600" stroke="%23000" stroke-width="2"/><rect x="147" y="18" width="14" height="20" rx="3" fill="%23ffd600" stroke="%23000" stroke-width="2"/><rect x="190" y="18" width="14" height="20" rx="3" fill="%23ffd600" stroke="%23000" stroke-width="2"/><rect x="61" y="18" width="14" height="6" rx="2" fill="%23000"/><rect x="104" y="18" width="14" height="6" rx="2" fill="%23000"/><rect x="147" y="18" width="14" height="6" rx="2" fill="%23000"/><rect x="190" y="18" width="14" height="6" rx="2" fill="%23000"/><rect x="128" y="12" width="4" height="18" fill="%23777"/><rect x="128" y="8" width="4" height="8" fill="%23bdbdbd"/><rect x="210" y="14" width="2" height="25" fill="%23777"/><rect x="48" y="14" width="2" height="25" fill="%23777"/><circle cx="60" cy="70" r="3" fill="%2355b0ff"/><circle cx="200" cy="70" r="3" fill="%2355b0ff"/><ellipse cx="130" cy="85" rx="70" ry="8" fill="rgba(21,104,167,0.33)" /></g></svg>') no-repeat center/contain;
-}
-
-/* Frosted glass card for form */
 .glass-card {
   position: relative;
   z-index: 2;
-  max-width: 340px;
-  margin: 7vh auto 0 auto;
-  padding: 28px 24px 30px 24px;
-  background: rgba(255,255,255,0.16);
-  border-radius: 18px;
-  box-shadow: 0 8px 54px rgba(0,0,0,0.23);
-  backdrop-filter: blur(10px);
-  border: 1.5px solid rgba(255,255,255,0.26);
+  max-width: 390px;
+  margin: 5vh auto 0 auto;
+  padding: 28px 24px 24px 24px;
+  background: rgba(255,255,255,0.13);
+  border-radius: 20px;
+  box-shadow: 0 8px 60px rgba(0,0,0,0.20);
+  backdrop-filter: blur(13px);
+  border: 1.5px solid rgba(255,255,255,0.23);
   text-align: center;
   animation: floatCard 2.2s cubic-bezier(.58,.01,.53,1) 1;
 }
 
 @keyframes floatCard {
-  from { transform: translateY(50px) scale(0.95); opacity: 0;}
+  from { transform: translateY(70px) scale(0.93); opacity: 0;}
   to   { transform: none; opacity: 1;}
 }
 
 h1 {
   color: #fff;
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   margin-bottom: 23px;
-  text-shadow: 0 2px 12px rgba(0,30,80,0.14);
+  text-shadow: 0 2px 12px rgba(0,30,80,0.16);
 }
 
 .form-row {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  margin-bottom: 16px;
+  margin-bottom: 15px;
   align-items: flex-start;
 }
 
@@ -102,11 +68,10 @@ select, input[type="number"] {
   padding: 9px 11px;
   border: 1.5px solid #cbe1f8;
   border-radius: 7px;
-  background: rgba(255,255,255,0.52);
+  background: rgba(255,255,255,0.62);
   font-size: 1rem;
   font-family: inherit;
   color: #1e3850;
-  margin-bottom: 2px;
   outline: none;
   transition: border 0.2s, background 0.2s;
 }
@@ -115,38 +80,56 @@ select:focus, input[type="number"]:focus {
   background: #f4fbff;
 }
 
-.predict-btn {
-  width: 100%;
-  padding: 13px 0;
-  background: linear-gradient(90deg, #55b0ff 0%, #1c64f2 100%);
-  color: #fff;
-  font-size: 1.15rem;
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  justify-content: center;
+}
+
+.predict-btn, .random-btn {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 1.1rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
   box-shadow: 0 4px 18px rgba(30,100,242,0.10);
-  margin-top: 7px;
   transition: background 0.16s, transform 0.18s;
 }
-.predict-btn:hover,
-.predict-btn:focus {
+.predict-btn {
+  background: linear-gradient(90deg, #55b0ff 0%, #1c64f2 100%);
+  color: #fff;
+}
+.predict-btn:hover, .predict-btn:focus {
   background: linear-gradient(90deg, #1c64f2 0%, #55b0ff 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+.random-btn {
+  background: #fffbe7;
+  color: #1c64f2;
+  border: 1.2px solid #ffe066;
+}
+.random-btn:hover, .random-btn:focus {
+  background: #fffde7;
+  color: #137c4a;
+  border-color: #ffe066;
   transform: translateY(-2px) scale(1.04);
 }
 
 .result {
   margin-top: 28px;
-  min-height: 56px;
-  font-size: 1.22rem;
+  min-height: 44px;
+  font-size: 1.15rem;
   font-weight: 600;
   font-family: "Fira Mono", monospace;
-  border-radius: 10px;
-  box-shadow: 0 2px 24px rgba(30,100,242,0.07);
+  border-radius: 8px;
+  box-shadow: 0 2px 20px rgba(30,100,242,0.07);
   opacity: 0;
   transition: opacity 0.6s, background 0.3s, color 0.3s;
-  padding: 14px 0;
+  padding: 12px 0;
   letter-spacing: 0.01em;
   background: transparent;
 }
@@ -155,9 +138,8 @@ select:focus, input[type="number"]:focus {
   opacity: 1;
   animation: slideInResult 0.72s cubic-bezier(.31,1.18,.61,1) 1;
 }
-
 @keyframes slideInResult {
-  from { transform: translateY(28px) scale(0.96);}
+  from { transform: translateY(28px) scale(0.97);}
   to   { transform: none;}
 }
 
@@ -167,7 +149,6 @@ select:focus, input[type="number"]:focus {
   border: 1.5px solid #7fe0b7;
   box-shadow: 0 2px 18px #7fe0b744;
 }
-
 .result.not-survived {
   background: linear-gradient(90deg,#fff0f1 60%,#ffd6db 100%);
   color: #b23340;
@@ -175,9 +156,82 @@ select:focus, input[type="number"]:focus {
   box-shadow: 0 2px 18px #ffb9c244;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .glass-card { max-width: 97vw; padding: 17vw 5vw 10vw 5vw;}
-  .titanic-ship { width: 130vw; left: 50vw;}
-  h1 { font-size: 1.17rem;}
+.passenger-card {
+  margin-top: 32px;
+  background: rgba(255,255,255,0.86);
+  border-radius: 16px;
+  box-shadow: 0 2px 24px rgba(30,100,242,0.10);
+  padding: 18px 16px;
+  text-align: left;
+  display: none;
+  animation: fadeInPassenger 1s cubic-bezier(.3,1.2,.6,1.1) 1;
+}
+@keyframes fadeInPassenger {
+  from { opacity: 0; transform: translateY(32px) scale(0.97);}
+  to   { opacity: 1; transform: none;}
+}
+.passenger-card.visible {
+  display: block;
+}
+.passenger-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+.passenger-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2.5px solid #1c64f2;
+  background: #e0eafc;
+  object-fit: cover;
+}
+.passenger-details {
+  flex: 1;
+}
+.passenger-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1c64f2;
+  margin-bottom: 2px;
+}
+.passenger-fate {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.passenger-fate.survived {
+  color: #138457;
+}
+.passenger-fate.not-survived {
+  color: #b23340;
+}
+.passenger-story {
+  margin-top: 11px;
+  font-size: 1.01rem;
+  color: #223;
+}
+
+.passenger-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 15px;
+  margin-top: 6px;
+  font-size: 0.96rem;
+  color: #333;
+}
+.passenger-stat {
+  background: #f4f9ff;
+  border-radius: 6px;
+  padding: 3px 7px;
+  font-family: "Fira Mono", monospace;
+  color: #1976d2;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 540px) {
+  .glass-card { max-width: 97vw; padding: 7vw 3vw 10vw 3vw;}
+  h1 { font-size: 1.07rem;}
+  .passenger-card { padding: 4vw 2vw; }
 }
