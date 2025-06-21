@@ -2,30 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Will You Survive Titanic?</title>
-  <link rel="stylesheet" href="styles/style.css" />
+  <title>Titanic Survival Playground</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Will You Survive Titanic?</h1>
-  <form id="titanic-form">
-    <label>Age: <input type="number" name="age" required /></label><br>
-    <label>Sex: 
-      <select name="sex" required>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-      </select>
-    </label><br>
-    <label>Class: 
-      <select name="pclass" required>
-        <option value="1">1st</option>
-        <option value="2">2nd</option>
-        <option value="3">3rd</option>
-      </select>
-    </label><br>
-    <button type="submit">Predict</button>
-  </form>
-  <div id="result"></div>
-  <script src="src/model.js"></script>
-  <script src="src/app.js"></script>
+  <div class="container">
+    <h1>Titanic Survival Playground</h1>
+    <form id="titanic-form" autocomplete="off">
+      <div class="form-group">
+        <label for="pclass">Class</label>
+        <select id="pclass" name="pclass" required>
+          <option value="">Select class</option>
+          <option value="1">1st</option>
+          <option value="2">2nd</option>
+          <option value="3">3rd</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="sex">Sex</label>
+        <select id="sex" name="sex" required>
+          <option value="">Select sex</option>
+          <option value="female">Female</option>
+          <option value="male">Male</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input id="age" name="age" type="number" min="0" max="100" step="1" required placeholder="Enter age" />
+      </div>
+      <button type="submit" class="predict-btn">Predict</button>
+    </form>
+    <div id="result" class="result"></div>
+  </div>
+  <script src="model.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

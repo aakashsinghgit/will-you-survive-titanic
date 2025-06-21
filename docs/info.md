@@ -1,0 +1,2 @@
+> **Why are the results seemingly biased?**  
+> The Titanic survival model reflects real historical priorities and inequalities: women, children, and first-class passengers truly had a higher chance of survival. The model isn’t “biased” in a modern sense; it’s reflecting the reality of 1912.
