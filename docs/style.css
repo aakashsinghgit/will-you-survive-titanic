@@ -30,13 +30,13 @@ body, html {
   to   { background-position-x: 120px; }
 }
 
-/* Titanic ship - simple SVG */
+/* Titanic ship */
 .titanic-ship {
   position: fixed;
   left: 50%;
   bottom: 110px;
-  width: 240px;
-  height: 80px;
+  width: 260px;
+  height: 90px;
   z-index: 1;
   transform: translateX(-50%) rotate(-2deg);
   pointer-events: none;
@@ -47,7 +47,7 @@ body, html {
   display: block;
   width: 100%;
   height: 100%;
-  background: url('data:image/svg+xml;utf8,<svg width="240" height="80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="120" cy="70" rx="90" ry="13" fill="rgba(30,60,90,0.22)" /><rect x="40" y="42" width="140" height="32" rx="12" fill="%23e0e0e0"/><rect x="60" y="32" width="100" height="16" rx="6" fill="%23eeeeee"/><rect x="75" y="24" width="10" height="14" fill="%23bdbdbd"/><rect x="155" y="24" width="10" height="14" fill="%23bdbdbd"/><rect x="115" y="24" width="10" height="14" fill="%23bdbdbd"/><circle cx="60" cy="60" r="4" fill="%2355b0ff"/><circle cx="180" cy="60" r="4" fill="%2355b0ff"/><ellipse cx="120" cy="74" rx="70" ry="7" fill="rgba(21,104,167,0.33)" /></svg>') no-repeat center/contain;
+  background: url('data:image/svg+xml;utf8,<svg width="260" height="90" xmlns="http://www.w3.org/2000/svg"><g><ellipse cx="130" cy="80" rx="90" ry="13" fill="rgba(30,60,90,0.22)" /><rect x="30" y="60" width="200" height="22" rx="10" fill="%23b71c1c"/><rect x="36" y="48" width="188" height="20" rx="7" fill="%23000"/><rect x="46" y="39" width="168" height="13" rx="5" fill="%23fff"/><rect x="54" y="32" width="18" height="17" rx="4" fill="%23fff"/><rect x="188" y="32" width="18" height="17" rx="4" fill="%23fff"/><rect x="120" y="27" width="20" height="8" rx="2" fill="%23fff"/><rect x="61" y="18" width="14" height="20" rx="3" fill="%23ffd600" stroke="%23000" stroke-width="2"/><rect x="104" y="18" width="14" height="20" rx="3" fill="%23ffd600" stroke="%23000" stroke-width="2"/><rect x="147" y="18" width="14" height="20" rx="3" fill="%23ffd600" stroke="%23000" stroke-width="2"/><rect x="190" y="18" width="14" height="20" rx="3" fill="%23ffd600" stroke="%23000" stroke-width="2"/><rect x="61" y="18" width="14" height="6" rx="2" fill="%23000"/><rect x="104" y="18" width="14" height="6" rx="2" fill="%23000"/><rect x="147" y="18" width="14" height="6" rx="2" fill="%23000"/><rect x="190" y="18" width="14" height="6" rx="2" fill="%23000"/><rect x="128" y="12" width="4" height="18" fill="%23777"/><rect x="128" y="8" width="4" height="8" fill="%23bdbdbd"/><rect x="210" y="14" width="2" height="25" fill="%23777"/><rect x="48" y="14" width="2" height="25" fill="%23777"/><circle cx="60" cy="70" r="3" fill="%2355b0ff"/><circle cx="200" cy="70" r="3" fill="%2355b0ff"/><ellipse cx="130" cy="85" rx="70" ry="8" fill="rgba(21,104,167,0.33)" /></g></svg>') no-repeat center/contain;
 }
 
 /* Frosted glass card for form */
