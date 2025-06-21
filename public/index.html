@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Will You Survive Titanic?</title>
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <h1>Will You Survive Titanic?</h1>
+  <form id="titanic-form">
+    <label>Age: <input type="number" name="age" required /></label><br>
+    <label>Sex: 
+      <select name="sex" required>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </label><br>
+    <label>Class: 
+      <select name="pclass" required>
+        <option value="1">1st</option>
+        <option value="2">2nd</option>
+        <option value="3">3rd</option>
+      </select>
+    </label><br>
+    <button type="submit">Predict</button>
+  </form>
+  <div id="result"></div>
+  <script src="src/model.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
