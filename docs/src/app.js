@@ -109,12 +109,36 @@ function showPassengerCard(passenger, survived) {
     </div>
     <div class="passenger-story">${narrative}</div>
   `;
+}
+
+function showPlaceholderCard() {
   const card = document.getElementById('passengerCard');
-  card.classList.add('visible');
+  card.innerHTML = `
+    <div class="placeholder-card" id="waitingShip">
+      <div style="font-size:3.1rem;line-height:1;">🛳️</div>
+      <div style="margin-top:12px; font-size:1.13rem;">
+        Ready to set sail!<br>Fill the form and predict survival.
+      </div>
+    </div>
+  `;
+}
+function hidePlaceholderCard() {
+  const placeholder = document.getElementById('waitingShip');
+  if (placeholder) {
+    placeholder.classList.add('fadeout');
+    setTimeout(() => {
+      if (placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);
+    }, 500); // match transition duration
+  }
 }
 
 function hidePassengerCard() {
-  document.getElementById('passengerCard').classList.remove('visible');
+  document.getElementById('passengerCard').innerHTML = "";
+}
+function clearResult() {
+  const result = document.getElementById('result');
+  result.classList.remove("survived", "not-survived");
+  result.textContent = "";
 }
 
 function getPassengerWithIdentity() {
@@ -143,31 +167,29 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   document.getElementById('model').addEventListener('change', updateModelInfo);
   updateModelInfo();
+
+  // Show ship placeholder on the right panel at load
+  showPlaceholderCard();
 });
 
 document.getElementById('randomPassenger').onclick = function () {
   const passenger = randomPassenger();
   setForm(passenger);
-  // Store name/ticket in localStorage for next submit
   localStorage.setItem('lastRandomPassenger', JSON.stringify({
     name: passenger.name,
     ticket: passenger.ticket,
   }));
   hidePassengerCard();
-  // Reset result visibility
-  const result = document.getElementById('result');
-  result.className = "result";
-  result.textContent = "";
+  clearResult();
+  showPlaceholderCard();
 };
 
 document.getElementById('titanic-form').onsubmit = function (e) {
   e.preventDefault();
 
-  // Basic validation first
   const passenger = getPassengerWithIdentity();
   const resultEl = document.getElementById('result');
 
-  // Validation: check for missing or invalid inputs
   if (
     !passenger.pclass ||
     !passenger.sex ||
@@ -177,37 +199,34 @@ document.getElementById('titanic-form').onsubmit = function (e) {
     isNaN(passenger.fare) ||
     !passenger.embarked
   ) {
-    // Optionally show error message
-    resultEl.className = "result visible";
+    resultEl.classList.remove("survived", "not-survived");
     resultEl.textContent = "❗ Please fill in all fields with valid values.";
     return;
   }
 
-  hidePassengerCard(); // Only hide after validation passes
+  hidePlaceholderCard();
+  hidePassengerCard();
+  clearResult();
 
-  // Client-side limiter: 10 seconds between submits
   const lastSubmit = parseInt(localStorage.getItem('lastTitanicSubmit') || "0", 10);
   if (Date.now() - lastSubmit < 10000) {
-    resultEl.className = "result visible";
+    resultEl.classList.remove("survived", "not-survived");
     resultEl.textContent = "⏱️ Please wait a few seconds before predicting again.";
     return;
   }
   localStorage.setItem('lastTitanicSubmit', Date.now().toString());
 
-  // Use selected model
   const modelKey = document.getElementById('model').value;
   const prob = predictSurvivalMulti(passenger, modelKey);
 
-  resultEl.classList.remove("survived", "not-survived", "visible");
-  setTimeout(() => {
-    if (prob > 0.5) {
-      resultEl.textContent = `🎉 Survived! Chance: ${(prob * 100).toFixed(1)}%`;
-      resultEl.classList.add("survived");
-    } else {
-      resultEl.textContent = `💧 Did not survive. Chance: ${(prob * 100).toFixed(1)}%`;
-      resultEl.classList.add("not-survived");
-    }
-    resultEl.classList.add("visible");
-    showPassengerCard(passenger, prob > 0.5);
-  }, 130);
+  if (prob > 0.5) {
+    resultEl.textContent = `🎉 Survived! Chance: ${(prob * 100).toFixed(1)}%`;
+    resultEl.classList.add("survived");
+    resultEl.classList.remove("not-survived");
+  } else {
+    resultEl.textContent = `💧 Did not survive. Chance: ${(prob * 100).toFixed(1)}%`;
+    resultEl.classList.add("not-survived");
+    resultEl.classList.remove("survived");
+  }
+  showPassengerCard(passenger, prob > 0.5);
 };

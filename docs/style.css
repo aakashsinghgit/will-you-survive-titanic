@@ -10,9 +10,7 @@ body, html {
   position: fixed;
   z-index: 0;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: url('https://upload.wikimedia.org/wikipedia/commons/f/fd/RMS_Titanic_3.jpg') center bottom/cover no-repeat;
-  /* Replace above URL with your preferred Titanic image */
-  filter: brightness(0.62) blur(1.2px);
+  background: linear-gradient(135deg, #0e3c74 0%, #1a72b8 55%, #44b0e6 100%);
   width: 100vw;
   height: 100vh;
 }
@@ -56,7 +54,7 @@ body, html {
 
 .left-panel .panel-content,
 .right-panel .panel-content {
-  background: rgba(240,248,255,0.24);
+  background: rgba(240,248,255,0.82);
   border-radius: 18px;
   box-shadow: 0 2px 18px rgba(30,100,242,0.08);
   padding: 24px 18px 28px 18px;
@@ -190,27 +188,15 @@ select:focus, input[type="number"]:focus {
 }
 
 .result {
-  margin-top: 0;
   min-height: 48px;
   font-size: 1.15rem;
   font-weight: 600;
   font-family: "Fira Mono", monospace;
   border-radius: 8px;
   box-shadow: 0 2px 20px rgba(30,100,242,0.07);
-  opacity: 0;
-  transition: opacity 0.6s, background 0.3s, color 0.3s;
   padding: 12px 0;
   letter-spacing: 0.01em;
   background: transparent;
-}
-
-.result.visible {
-  opacity: 1;
-  animation: slideInResult 0.72s cubic-bezier(.31,1.18,.61,1) 1;
-}
-@keyframes slideInResult {
-  from { transform: translateY(28px) scale(0.97);}
-  to   { transform: none;}
 }
 
 .result.survived {
@@ -219,11 +205,35 @@ select:focus, input[type="number"]:focus {
   border: 1.5px solid #7fe0b7;
   box-shadow: 0 2px 18px #7fe0b744;
 }
+
 .result.not-survived {
   background: linear-gradient(90deg,#fff0f1 60%,#ffd6db 100%);
   color: #b23340;
   border: 1.5px solid #ffb9c2;
   box-shadow: 0 2px 18px #ffb9c244;
+}
+
+.placeholder-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 130px;
+  color: #2476c7;
+  font-size: 1.5rem;
+  background: rgba(255,255,255,0.75);
+  border-radius: 16px;
+  box-shadow: 0 2px 24px rgba(30,100,242,0.10);
+  padding: 30px 12px;
+  transition: opacity 0.5s, transform 0.5s;
+  opacity: 1;
+  margin-top: 28px;
+}
+
+.placeholder-card.fadeout {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.98);
+  pointer-events: none;
 }
 
 .passenger-card {
@@ -233,16 +243,9 @@ select:focus, input[type="number"]:focus {
   box-shadow: 0 2px 24px rgba(30,100,242,0.10);
   padding: 18px 16px;
   text-align: left;
-  display: none;
-  animation: fadeInPassenger 1s cubic-bezier(.3,1.2,.6,1.1) 1;
+  min-height: 70px;
 }
-@keyframes fadeInPassenger {
-  from { opacity: 0; transform: translateY(32px) scale(0.97);}
-  to   { opacity: 1; transform: none;}
-}
-.passenger-card.visible {
-  display: block;
-}
+
 .passenger-header {
   display: flex;
   align-items: center;
