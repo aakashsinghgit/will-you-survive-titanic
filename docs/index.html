@@ -9,71 +9,78 @@
 </head>
 <body>
   <div class="background-img"></div>
-  <div class="glass-card">
-    <h1>🚢 Would you survive Titanic?</h1>
-    <form id="titanic-form" autocomplete="off">
-      <div class="form-row">
-  <label for="model">Model</label>
-  <select id="model" name="model">
-    <option value="logreg">Logistic Regression</option>
-    <option value="rf">Random Forest</option>
-    <option value="svm">SVM</option>
-    <option value="knn">KNN</option>
-    <option value="gb">Gradient Boosting</option>
-    <option value="nn">Neural Network</option>
-  </select>
-</div>
-      <div class="form-row">
-        <label for="pclass">Ticket Class</label>
-        <select id="pclass" name="pclass" required>
-          <option value="">Select</option>
-          <option value="1">1st</option>
-          <option value="2">2nd</option>
-          <option value="3">3rd</option>
-        </select>
+  <div class="main-container">
+    <aside class="sidebar" id="sidebar">
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle model selector">&#9776; Model</button>
+      <div class="sidebar-content" id="sidebarContent">
+        <h2>🧮 Choose Model</h2>
+        <div class="form-row">
+          <label for="model">Model</label>
+          <select id="model" name="model">
+            <option value="logreg">Logistic Regression</option>
+            <option value="rf">Random Forest</option>
+            <option value="svm">SVM</option>
+            <option value="knn">KNN</option>
+            <option value="gb">Gradient Boosting</option>
+            <option value="nn">Neural Network</option>
+          </select>
+        </div>
+        <div class="model-info" id="modelInfo"></div>
       </div>
-      <div class="form-row">
-        <label for="sex">Sex</label>
-        <select id="sex" name="sex" required>
-          <option value="">Select</option>
-          <option value="female">Female</option>
-          <option value="male">Male</option>
-        </select>
+    </aside>
+    <main class="main-content">
+      <div class="glass-card">
+        <h1>🚢 Would you survive Titanic?</h1>
+        <form id="titanic-form" autocomplete="off">
+          <div class="form-row">
+            <label for="pclass">Ticket Class</label>
+            <select id="pclass" name="pclass" required>
+              <option value="">Select</option>
+              <option value="1">1st</option>
+              <option value="2">2nd</option>
+              <option value="3">3rd</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="sex">Gender</label>
+            <select id="sex" name="sex" required>
+              <option value="">Select</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" min="0" max="100" required placeholder="Enter age" />
+          </div>
+          <div class="form-row">
+            <label for="sibsp">Siblings/Spouse Aboard</label>
+            <input id="sibsp" name="sibsp" type="number" min="0" max="10" required placeholder="0" />
+          </div>
+          <div class="form-row">
+            <label for="parch">Parents/Children Aboard</label>
+            <input id="parch" name="parch" type="number" min="0" max="10" required placeholder="0" />
+          </div>
+          <div class="form-row">
+            <label for="embarked">Embarked</label>
+            <select id="embarked" name="embarked" required>
+              <option value="">Select</option>
+              <option value="C">Cherbourg</option>
+              <option value="Q">Queenstown</option>
+              <option value="S">Southampton</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="predict-btn">Predict</button>
+            <button type="button" class="random-btn" id="randomPassenger">🎲 Random Passenger</button>
+          </div>
+        </form>
+        <div id="result" class="result"></div>
+        <div id="passengerCard" class="passenger-card"></div>
       </div>
-      <div class="form-row">
-        <label for="age">Age</label>
-        <input id="age" name="age" type="number" min="0" max="100" required placeholder="Enter age" />
-      </div>
-      <div class="form-row">
-        <label for="sibsp">Siblings/Spouse Aboard</label>
-        <input id="sibsp" name="sibsp" type="number" min="0" max="10" required placeholder="0" />
-      </div>
-      <div class="form-row">
-        <label for="parch">Parents/Children Aboard</label>
-        <input id="parch" name="parch" type="number" min="0" max="10" required placeholder="0" />
-      </div>
-      <div class="form-row">
-        <label for="fare">Fare (£)</label>
-        <input id="fare" name="fare" type="number" min="0" max="600" step="0.01" required placeholder="e.g. 30" />
-      </div>
-      <div class="form-row">
-        <label for="embarked">Embarked</label>
-        <select id="embarked" name="embarked" required>
-          <option value="">Select</option>
-          <option value="C">Cherbourg</option>
-          <option value="Q">Queenstown</option>
-          <option value="S">Southampton</option>
-        </select>
-      </div>
-      <div class="form-actions">
-        <button type="submit" class="predict-btn">Predict</button>
-        <button type="button" class="random-btn" id="randomPassenger">🎲 Random Passenger</button>
-      </div>
-    </form>
-    <div id="result" class="result"></div>
-    <div id="passengerCard" class="passenger-card"></div>
+    </main>
   </div>
-  <script src="src/model.js"></script>
-  <script src="src/app.js"></script>
+  <script src="docs/model.js"></script>
+  <script src="docs/app.js"></script>
 </body>
 </html>
