@@ -1,9 +1,6 @@
-// Simple demo models for Titanic, more can be added with real coefficients/logic.
-
+// --- Individual model functions ---
 // Logistic Regression coefficients (dummy example, for demo)
 function model_logreg(passenger) {
-  // [Intercept, Pclass, Sex, Age, SibSp, Parch, Fare, Embarked]
-  // Sex: 1=male, 0=female; Embarked: C=0, Q=1, S=2
   const w = {
     intercept: -1.2,
     pclass: -0.52,
@@ -32,7 +29,6 @@ function model_logreg(passenger) {
 
 // Random Forest (dummy decision rule for demo)
 function model_rf(passenger) {
-  // Just a fun/simple random forest-like voting
   let votes = 0;
   if (passenger.sex === "female") votes++;
   if (passenger.pclass === 1) votes++;
@@ -124,16 +120,6 @@ function model_nn(passenger) {
   return Math.max(0, Math.min(1, out));
 }
 
-// Model info strings
-const MODEL_INFOS = {
-  logreg: "Logistic Regression: Linear model, interpretable, shows how each input affects the odds of survival.",
-  rf: "Random Forest: Many simple decision trees vote to predict survival, capturing nonlinear patterns.",
-  svm: "Support Vector Machine: Separates survivors from non-survivors with an optimal boundary.",
-  knn: "K-Nearest Neighbors: Looks at 'similar' passengers in the data to guess the outcome.",
-  gb: "Gradient Boosting: Combines weak learners to make a strong overall prediction.",
-  nn: "Neural Network: Mimics a simple 'brain' to find complex patterns in the data."
-};
-
 // Map of model functions
 const MODELS = {
   logreg: model_logreg,
@@ -145,7 +131,7 @@ const MODELS = {
 };
 
 // Main prediction function: uses selected model
-function predictSurvivalMulti(passenger, modelKey) {
+function predictSurvival(passenger, modelKey) {
   const fn = MODELS[modelKey] || MODELS['logreg'];
   return fn(passenger);
 }

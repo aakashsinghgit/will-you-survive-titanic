@@ -1,9 +1,53 @@
-const DICEBEAR_BASE = "https://api.dicebear.com/7.x/adventurer/svg";
+// --- Model Info and Image Paths ---
+const MODEL_INFOS = {
+  logreg: {
+    name: "Logistic Regression",
+    desc: "A simple linear model estimating survival probability.",
+    img: "images/logreg.png"
+  },
+  rf: {
+    name: "Random Forest",
+    desc: "An ensemble of decision trees for robust predictions.",
+    img: "images/rf.png"
+  },
+  svm: {
+    name: "Support Vector Machine",
+    desc: "Separates survivors and non-survivors with a hyperplane.",
+    img: "images/svm.png"
+  },
+  knn: {
+    name: "K-Nearest Neighbors",
+    desc: "Predicts survival by comparing with similar passengers.",
+    img: "images/knn.png"
+  },
+  gb: {
+    name: "Gradient Boosting",
+    desc: "Boosted decision trees for high accuracy.",
+    img: "images/gb.png"
+  },
+  nn: {
+    name: "Neural Network",
+    desc: "A deep learning model for complex patterns.",
+    img: "images/nn.png"
+  }
+};
 
+// --- Update Model Info and Add Image ---
+function updateModelInfo() {
+  const modelKey = document.getElementById('model').value;
+  const info = MODEL_INFOS[modelKey];
+  const infoBox = document.getElementById('modelInfo');
+  let html = `<strong>${info.name}</strong><br>${info.desc}`;
+  if (info.img) {
+    html += `<div style="margin-top:12px;"><img src="${info.img}" alt="${info.name}" style="max-width:80px;max-height:60px;border-radius:10px;box-shadow:0 2px 10px #abd3fc44;"></div>`;
+  }
+  infoBox.innerHTML = html;
+}
+
+// --- Random Passenger Generator ---
 function randomFrom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
-
 function randomPassenger() {
   const pclass = randomFrom([1, 2, 3]);
   const sex = randomFrom(["female", "male"]);
@@ -12,9 +56,9 @@ function randomPassenger() {
   const parch = Math.floor(Math.random() * 3);
   const fare = (Math.random() * 200 + 5).toFixed(2);
   const embarked = randomFrom(["C", "Q", "S"]);
-  const firstNamesMale = ["Thomas", "William", "John", "Charles", "George", "Edward", "Frederick", "Henry", "Albert", "James"];
-  const firstNamesFemale = ["Mary", "Elizabeth", "Margaret", "Sarah", "Alice", "Dorothy", "Edith", "Emily", "Helen", "Annie"];
-  const surnames = ["Smith", "Brown", "Wilson", "Johnson", "Williams", "Jones", "Taylor", "Davies", "Evans", "Thomas", "Roberts"];
+  const firstNamesMale = ["Thomas", "William", "John", "Charles", "George"];
+  const firstNamesFemale = ["Mary", "Elizabeth", "Margaret", "Sarah", "Alice"];
+  const surnames = ["Smith", "Brown", "Wilson", "Johnson", "Williams"];
   const firstName = sex === "male" ? randomFrom(firstNamesMale) : randomFrom(firstNamesFemale);
   const surname = randomFrom(surnames);
   const name = `${firstName} ${surname}`;
@@ -22,6 +66,7 @@ function randomPassenger() {
   return { pclass, sex, age, sibsp, parch, fare, embarked, name, ticket };
 }
 
+// --- Fill the Form with Random Passenger ---
 function setForm(passenger) {
   document.getElementById('pclass').value = passenger.pclass;
   document.getElementById('sex').value = passenger.sex;
@@ -32,6 +77,7 @@ function setForm(passenger) {
   document.getElementById('embarked').value = passenger.embarked;
 }
 
+// --- Get Passenger Data from Form ---
 function getPassengerFromForm() {
   return {
     pclass: parseInt(document.getElementById('pclass').value, 10),
@@ -41,9 +87,12 @@ function getPassengerFromForm() {
     parch: parseInt(document.getElementById('parch').value, 10),
     fare: parseFloat(document.getElementById('fare').value),
     embarked: document.getElementById('embarked').value,
+    name: "Passenger",
+    ticket: "N/A"
   };
 }
 
+// --- Avatar Generator (Dicebear) ---
 function getAvatarUrl(sex, age, pclass) {
   const seed = encodeURIComponent(`${sex}${age}${pclass}${Math.random()}`);
   let options = "";
@@ -51,9 +100,10 @@ function getAvatarUrl(sex, age, pclass) {
   if (sex === "male") options += "&beardProbability=20";
   if (pclass == 1) options += "&glassesProbability=13";
   if (age < 12) options += "&mouth=smileBig";
-  return `${DICEBEAR_BASE}?seed=${seed}${options}`;
+  return `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}${options}`;
 }
 
+// --- Narrative Generator ---
 function generateNarrative(passenger, survived) {
   const classes = {1: "First", 2: "Second", 3: "Third"};
   const ports = {C: "Cherbourg", Q: "Queenstown", S: "Southampton"};
@@ -76,6 +126,7 @@ function generateNarrative(passenger, survived) {
   return sentences.filter(Boolean).join(" ");
 }
 
+// --- Show Passenger Card in Right Panel ---
 function showPassengerCard(passenger, survived) {
   const avatarUrl = getAvatarUrl(passenger.sex, passenger.age, passenger.pclass);
   const fateText = survived ? "Survived" : "Did Not Survive";
@@ -105,80 +156,52 @@ function showPassengerCard(passenger, survived) {
   `;
 }
 
+// --- Show Placeholder Ship Card ---
 function showPlaceholderCard() {
-  const card = document.getElementById('passengerCard');
-  card.innerHTML = `
+  document.getElementById('passengerCard').innerHTML = `
     <div class="placeholder-card" id="waitingShip">
-      <div style="font-size:3.1rem;line-height:1;">🛳️</div>
-      <div style="margin-top:12px; font-size:1.13rem;">
+      <div style="font-size:2.3rem;line-height:1;">🛳️</div>
+      <div style="margin-top:10px; font-size:1.03rem;">
         Ready to set sail!<br>Fill the form and predict survival.
       </div>
     </div>
   `;
 }
 
-function clearPassengerCard() {
-  document.getElementById('passengerCard').innerHTML = "";
-}
-
+// --- Clear Result Display ---
 function clearResult() {
   const result = document.getElementById('result');
   result.classList.remove("survived", "not-survived");
   result.textContent = "";
 }
 
-function getPassengerWithIdentity() {
-  const passenger = getPassengerFromForm();
-  const lastRandom = JSON.parse(localStorage.getItem('lastRandomPassenger') || '{}');
-  if (lastRandom && lastRandom.name && lastRandom.ticket) {
-    passenger.name = lastRandom.name;
-    passenger.ticket = lastRandom.ticket;
-  } else {
-    const random = randomPassenger();
-    passenger.name = random.name;
-    passenger.ticket = random.ticket;
-  }
-  return passenger;
-}
-
+// --- Main Event Listeners ---
 document.addEventListener("DOMContentLoaded", function() {
-  // Model info update
-  function updateModelInfo() {
-    const model = document.getElementById('model').value;
-    const info = typeof MODEL_INFOS !== "undefined" ? MODEL_INFOS[model] : "";
-    document.getElementById('modelInfo').textContent = info || "";
-  }
+  // Model selector
   document.getElementById('model').addEventListener('change', updateModelInfo);
   updateModelInfo();
 
-  // Show ship placeholder on the right panel at load
-  showPlaceholderCard();
-
+  // Random passenger
   document.getElementById('randomPassenger').onclick = function () {
     const passenger = randomPassenger();
     setForm(passenger);
-    localStorage.setItem('lastRandomPassenger', JSON.stringify({
-      name: passenger.name,
-      ticket: passenger.ticket,
-    }));
-    clearPassengerCard();
-    clearResult();
     showPlaceholderCard();
+    clearResult();
   };
 
+  // Show ship on load
+  showPlaceholderCard();
+
+  // Passenger form submission
   document.getElementById('titanic-form').onsubmit = function (e) {
     e.preventDefault();
-
-    const passenger = getPassengerWithIdentity();
+    const passenger = getPassengerFromForm();
     const resultEl = document.getElementById('result');
 
     if (
-      !passenger.pclass ||
-      !passenger.sex ||
-      isNaN(passenger.age) ||
-      isNaN(passenger.sibsp) ||
-      isNaN(passenger.parch) ||
-      isNaN(passenger.fare) ||
+      !passenger.pclass || !passenger.sex ||
+      isNaN(passenger.age) || isNaN(passenger.sibsp) ||
+      isNaN(passenger.parch) || isNaN(passenger.fare) ||
       !passenger.embarked
     ) {
       resultEl.classList.remove("survived", "not-survived");
@@ -186,19 +209,18 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     }
 
-    clearPassengerCard();
     clearResult();
 
-    const lastSubmit = parseInt(localStorage.getItem('lastTitanicSubmit') || "0", 10);
-    if (Date.now() - lastSubmit < 10000) {
-      resultEl.classList.remove("survived", "not-survived");
-      resultEl.textContent = "⏱️ Please wait a few seconds before predicting again.";
-      return;
+    if (!passenger.name) {
+      passenger.name = "Passenger";
     }
-    localStorage.setItem('lastTitanicSubmit', Date.now().toString());
+    if (!passenger.ticket) {
+      passenger.ticket = "N/A";
+    }
 
     const modelKey = document.getElementById('model').value;
-    const prob = predictSurvivalMulti(passenger, modelKey);
+    // Call predictSurvival from model.js
+    const prob = predictSurvival(passenger, modelKey);
 
     if (prob > 0.5) {
       resultEl.textContent = `🎉 Survived! Chance: ${(prob * 100).toFixed(1)}%`;
