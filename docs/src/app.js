@@ -1,4 +1,3 @@
-// Avatar generator with DiceBear API, and random name generator
 const DICEBEAR_BASE = "https://api.dicebear.com/7.x/adventurer/svg";
 
 function randomFrom(arr) {
@@ -6,22 +5,19 @@ function randomFrom(arr) {
 }
 
 function randomPassenger() {
-  // Some simple random generators
   const pclass = randomFrom([1, 2, 3]);
   const sex = randomFrom(["female", "male"]);
-  const age = Math.floor(Math.random() * 74) + 2; // realistic age
+  const age = Math.floor(Math.random() * 74) + 2;
   const sibsp = Math.floor(Math.random() * 4);
   const parch = Math.floor(Math.random() * 3);
   const fare = (Math.random() * 200 + 5).toFixed(2);
   const embarked = randomFrom(["C", "Q", "S"]);
-  // Generate a random name
   const firstNamesMale = ["Thomas", "William", "John", "Charles", "George", "Edward", "Frederick", "Henry", "Albert", "James"];
   const firstNamesFemale = ["Mary", "Elizabeth", "Margaret", "Sarah", "Alice", "Dorothy", "Edith", "Emily", "Helen", "Annie"];
   const surnames = ["Smith", "Brown", "Wilson", "Johnson", "Williams", "Jones", "Taylor", "Davies", "Evans", "Thomas", "Roberts"];
   const firstName = sex === "male" ? randomFrom(firstNamesMale) : randomFrom(firstNamesFemale);
   const surname = randomFrom(surnames);
   const name = `${firstName} ${surname}`;
-  // Generate random ticket number
   const ticket = "PC " + (Math.floor(Math.random() * 89999) + 10000);
   return { pclass, sex, age, sibsp, parch, fare, embarked, name, ticket };
 }
@@ -49,7 +45,6 @@ function getPassengerFromForm() {
 }
 
 function getAvatarUrl(sex, age, pclass) {
-  // Use DiceBear with seed based on sex/age/pclass for variety and repeatability
   const seed = encodeURIComponent(`${sex}${age}${pclass}${Math.random()}`);
   let options = "";
   if (sex === "female") options += "&hair=long&lipColor=red";
@@ -60,7 +55,6 @@ function getAvatarUrl(sex, age, pclass) {
 }
 
 function generateNarrative(passenger, survived) {
-  // Use inputs to build a narrative
   const classes = {1: "First", 2: "Second", 3: "Third"};
   const ports = {C: "Cherbourg", Q: "Queenstown", S: "Southampton"};
   const sentences = [
@@ -122,19 +116,11 @@ function showPlaceholderCard() {
     </div>
   `;
 }
-function hidePlaceholderCard() {
-  const placeholder = document.getElementById('waitingShip');
-  if (placeholder) {
-    placeholder.classList.add('fadeout');
-    setTimeout(() => {
-      if (placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);
-    }, 500); // match transition duration
-  }
-}
 
-function hidePassengerCard() {
+function clearPassengerCard() {
   document.getElementById('passengerCard').innerHTML = "";
 }
+
 function clearResult() {
   const result = document.getElementById('result');
   result.classList.remove("survived", "not-survived");
@@ -142,15 +128,12 @@ function clearResult() {
 }
 
 function getPassengerWithIdentity() {
-  // Get data from form, but add name/ticket if available from last random
   const passenger = getPassengerFromForm();
-  // Retrieve stored random name/ticket if present
   const lastRandom = JSON.parse(localStorage.getItem('lastRandomPassenger') || '{}');
   if (lastRandom && lastRandom.name && lastRandom.ticket) {
     passenger.name = lastRandom.name;
     passenger.ticket = lastRandom.ticket;
   } else {
-    // fallback: generate new
     const random = randomPassenger();
     passenger.name = random.name;
     passenger.ticket = random.ticket;
@@ -170,63 +153,62 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Show ship placeholder on the right panel at load
   showPlaceholderCard();
+
+  document.getElementById('randomPassenger').onclick = function () {
+    const passenger = randomPassenger();
+    setForm(passenger);
+    localStorage.setItem('lastRandomPassenger', JSON.stringify({
+      name: passenger.name,
+      ticket: passenger.ticket,
+    }));
+    clearPassengerCard();
+    clearResult();
+    showPlaceholderCard();
+  };
+
+  document.getElementById('titanic-form').onsubmit = function (e) {
+    e.preventDefault();
+
+    const passenger = getPassengerWithIdentity();
+    const resultEl = document.getElementById('result');
+
+    if (
+      !passenger.pclass ||
+      !passenger.sex ||
+      isNaN(passenger.age) ||
+      isNaN(passenger.sibsp) ||
+      isNaN(passenger.parch) ||
+      isNaN(passenger.fare) ||
+      !passenger.embarked
+    ) {
+      resultEl.classList.remove("survived", "not-survived");
+      resultEl.textContent = "❗ Please fill in all fields with valid values.";
+      return;
+    }
+
+    clearPassengerCard();
+    clearResult();
+
+    const lastSubmit = parseInt(localStorage.getItem('lastTitanicSubmit') || "0", 10);
+    if (Date.now() - lastSubmit < 10000) {
+      resultEl.classList.remove("survived", "not-survived");
+      resultEl.textContent = "⏱️ Please wait a few seconds before predicting again.";
+      return;
+    }
+    localStorage.setItem('lastTitanicSubmit', Date.now().toString());
+
+    const modelKey = document.getElementById('model').value;
+    const prob = predictSurvivalMulti(passenger, modelKey);
+
+    if (prob > 0.5) {
+      resultEl.textContent = `🎉 Survived! Chance: ${(prob * 100).toFixed(1)}%`;
+      resultEl.classList.add("survived");
+      resultEl.classList.remove("not-survived");
+    } else {
+      resultEl.textContent = `💧 Did not survive. Chance: ${(prob * 100).toFixed(1)}%`;
+      resultEl.classList.add("not-survived");
+      resultEl.classList.remove("survived");
+    }
+    showPassengerCard(passenger, prob > 0.5);
+  };
 });
-
-document.getElementById('randomPassenger').onclick = function () {
-  const passenger = randomPassenger();
-  setForm(passenger);
-  localStorage.setItem('lastRandomPassenger', JSON.stringify({
-    name: passenger.name,
-    ticket: passenger.ticket,
-  }));
-  hidePassengerCard();
-  clearResult();
-  showPlaceholderCard();
-};
-
-document.getElementById('titanic-form').onsubmit = function (e) {
-  e.preventDefault();
-
-  const passenger = getPassengerWithIdentity();
-  const resultEl = document.getElementById('result');
-
-  if (
-    !passenger.pclass ||
-    !passenger.sex ||
-    isNaN(passenger.age) ||
-    isNaN(passenger.sibsp) ||
-    isNaN(passenger.parch) ||
-    isNaN(passenger.fare) ||
-    !passenger.embarked
-  ) {
-    resultEl.classList.remove("survived", "not-survived");
-    resultEl.textContent = "❗ Please fill in all fields with valid values.";
-    return;
-  }
-
-  hidePlaceholderCard();
-  hidePassengerCard();
-  clearResult();
-
-  const lastSubmit = parseInt(localStorage.getItem('lastTitanicSubmit') || "0", 10);
-  if (Date.now() - lastSubmit < 10000) {
-    resultEl.classList.remove("survived", "not-survived");
-    resultEl.textContent = "⏱️ Please wait a few seconds before predicting again.";
-    return;
-  }
-  localStorage.setItem('lastTitanicSubmit', Date.now().toString());
-
-  const modelKey = document.getElementById('model').value;
-  const prob = predictSurvivalMulti(passenger, modelKey);
-
-  if (prob > 0.5) {
-    resultEl.textContent = `🎉 Survived! Chance: ${(prob * 100).toFixed(1)}%`;
-    resultEl.classList.add("survived");
-    resultEl.classList.remove("not-survived");
-  } else {
-    resultEl.textContent = `💧 Did not survive. Chance: ${(prob * 100).toFixed(1)}%`;
-    resultEl.classList.add("not-survived");
-    resultEl.classList.remove("survived");
-  }
-  showPassengerCard(passenger, prob > 0.5);
-};

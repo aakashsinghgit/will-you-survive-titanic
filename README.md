@@ -1,95 +1,67 @@
-# Will You Survive Titanic? 🚢
+# Titanic Survival Playground
 
-A fun, interactive web playground that predicts your chances of surviving the Titanic disaster using a classic machine learning model!  
-No installations required — runs entirely in your browser and hosted via GitHub Pages.
-
----
-
-## 🌟 Features
-
-- **Web-based**: No need to install anything. Just open the site in your browser.
-- **Instant Predictions**: Enter your details (age, sex, class, etc.) and see your chances of survival.
-- **Powered by Machine Learning**: Uses a pre-trained model (based on the famous Titanic dataset) running fully client-side.
-- **100% Free & Open Source**: All code lives in this repository.
-- **Traffic Control**: Simple rate-limiting to ensure fair usage.
+**Will you survive the Titanic?**  
+Explore and predict outcomes using classic machine learning models, with a playful and interactive UI. Enter passenger details, select a model, and see not just a prediction but a narrative about your “passenger’s” fate.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Live Demo
 
-1. **Visit the App:**  
-   [https://YOUR_GITHUB_USERNAME.github.io/titanic-survival-playground/](https://YOUR_GITHUB_USERNAME.github.io/titanic-survival-playground/)
-
-2. **Try It Out:**  
-   - Fill in the form (age, sex, class, etc.)
-   - Click "Predict" to see your result.
+👉 [Try the App](https://aakashsinghgit.github.io/will-you-survive-titanic/)
 
 ---
 
-## 🛠️ How It Works
+## 🛠️ Project Structure
 
-- The web app uses a simple logistic regression model (classic Titanic ML demo) implemented in JavaScript.
-- All processing is done in your browser — no backend or server required!
-- Rate limiting prevents spamming predictions.
-
----
-
-## 🏗️ Project Structure
-
-```
-public/
-  └── index.html       # Main web page
-src/
-  ├── app.js           # UI and logic
-  └── model.js         # ML model logic
-styles/
-  └── style.css        # Styling
-.github/
-  └── workflows/
-      └── deploy.yml   # GitHub Actions for Pages deployment
-README.md
-```
+- **src/model.js**  
+  Contains the ML model logic (classic Titanic models, demo weights).
+- **src/app.js**  
+  Handles UI interactivity, form logic, random passenger generation, and displaying the results/narratives.
+- **style.css**  
+  App styling, including responsive layouts and visual effects.
+- **index.html**  
+  Main HTML structure with three panels: model selection, passenger form, and prediction/narrative info.
+- **README.md**  
+  You’re here!
 
 ---
 
-## 🧑‍💻 Development
+## ✨ Features
 
-You can edit everything directly in GitHub’s web VS Code!
-
-1. Clone or open this repo in GitHub.
-2. Edit files in the `src/`, `public/`, or `styles/` directories.
-3. Push your changes — GitHub Pages will auto-deploy your site.
-
----
-
-## 🐳 Deployment
-
-GitHub Pages is set up via the repository Settings or with a deploy workflow (`.github/workflows/deploy.yml`).  
-Your site will be live at:  
-`https://YOUR_GITHUB_USERNAME.github.io/titanic-survival-playground/`
+- **Three-panel layout:**  
+  - Left: Model selector & description  
+  - Center: Passenger form  
+  - Right: Prediction result & creative narrative
+- **Multiple ML models:** Try Logistic Regression, Random Forest, SVM, KNN, Gradient Boosting, Neural Network (demo logic)
+- **Random passenger:** Instantly generate a plausible, named passenger for quick predictions
+- **Fun passenger narrative:** Get a story along with your result!
+- **Responsive Design:** Works on desktop and mobile
+- **Blue ocean background:** Clean, readable, and thematic
 
 ---
 
-## ⚠️ Traffic Control
+## 📁 How to Run Locally
 
-- The app restricts repeated predictions using local browser storage.
-- For demo use only. Please don’t abuse the playground.
-
----
-
-## 🤝 Contributing
-
-Pull requests and suggestions are welcome!  
-Feel free to fork the repo or open an issue.
+1. **Clone this repo**
+2. Open `index.html` in your browser, or serve via a static server if preferred
+3. All source code is in the `/src` folder:
+   - `src/model.js`
+   - `src/app.js`
 
 ---
 
-## 📚 References
+## 📝 Customization
 
-- [Kaggle: Titanic - Machine Learning from Disaster](https://www.kaggle.com/c/titanic)
-- [TensorFlow.js](https://www.tensorflow.org/js/)
-- [GitHub Pages Documentation](https://pages.github.com/)
+- To add/change models, edit `src/model.js`
+- To customize the UI, edit `style.css` and `index.html`
+- For text, placeholders, or narrative logic, see `src/app.js`
 
 ---
 
-**Made with ❤️ using open-source tools and data.**
+## 📢 Credits
+
+- [Kaggle Titanic Dataset](https://www.kaggle.com/competitions/titanic)
+- DiceBear Avatars for passenger images
+
+---
+
