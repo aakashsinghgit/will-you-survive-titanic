@@ -163,8 +163,29 @@ document.getElementById('randomPassenger').onclick = function () {
 document.getElementById('titanic-form').onsubmit = function (e) {
   e.preventDefault();
 
-  // Client-side limiter: 10 seconds between submits
+  // Basic validation first
+  const passenger = getPassengerWithIdentity();
   const resultEl = document.getElementById('result');
+
+  // Validation: check for missing or invalid inputs
+  if (
+    !passenger.pclass ||
+    !passenger.sex ||
+    isNaN(passenger.age) ||
+    isNaN(passenger.sibsp) ||
+    isNaN(passenger.parch) ||
+    isNaN(passenger.fare) ||
+    !passenger.embarked
+  ) {
+    // Optionally show error message
+    resultEl.className = "result visible";
+    resultEl.textContent = "❗ Please fill in all fields with valid values.";
+    return;
+  }
+
+  hidePassengerCard(); // Only hide after validation passes
+
+  // Client-side limiter: 10 seconds between submits
   const lastSubmit = parseInt(localStorage.getItem('lastTitanicSubmit') || "0", 10);
   if (Date.now() - lastSubmit < 10000) {
     resultEl.className = "result visible";
@@ -172,13 +193,6 @@ document.getElementById('titanic-form').onsubmit = function (e) {
     return;
   }
   localStorage.setItem('lastTitanicSubmit', Date.now().toString());
-
-  // Collect form and identity info
-  const passenger = getPassengerWithIdentity();
-  hidePassengerCard();
-
-  // Basic validation
-  if (!passenger.pclass || !passenger.sex || isNaN(passenger.age) || isNaN(passenger.sibsp) || isNaN(passenger.parch) || isNaN(passenger.fare) || !passenger.embarked) return;
 
   // Use selected model
   const modelKey = document.getElementById('model').value;
