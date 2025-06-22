@@ -60,6 +60,11 @@ body, html {
   padding: 24px 18px 28px 18px;
   width: 100%;
   max-width: 330px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .left-panel {
@@ -185,6 +190,7 @@ select:focus, input[type="number"]:focus {
   border-radius: 9px;
   padding: 10px;
   min-height: 54px;
+  width: 100%;
 }
 
 .result {
@@ -197,6 +203,7 @@ select:focus, input[type="number"]:focus {
   padding: 12px 0;
   letter-spacing: 0.01em;
   background: transparent;
+  width: 100%;
 }
 
 .result.survived {
@@ -228,6 +235,7 @@ select:focus, input[type="number"]:focus {
   transition: opacity 0.5s, transform 0.5s;
   opacity: 1;
   margin-top: 28px;
+  width: 100%;
 }
 
 .placeholder-card.fadeout {
@@ -244,6 +252,7 @@ select:focus, input[type="number"]:focus {
   padding: 18px 16px;
   text-align: left;
   min-height: 70px;
+  width: 100%;
 }
 
 .passenger-header {
