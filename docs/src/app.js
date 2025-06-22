@@ -134,65 +134,7 @@ function getPassengerWithIdentity() {
   return passenger;
 }
 
-// SIDEBAR COLLAPSE ON MOBILE
-function setupSidebarCollapse() {
-  const sidebar = document.getElementById('sidebar');
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const sidebarContent = document.getElementById('sidebarContent');
-  function closeSidebar() {
-    sidebar.classList.remove('open');
-  }
-  function openSidebar() {
-    sidebar.classList.add('open');
-  }
-  sidebarToggle.addEventListener('click', function() {
-    if (sidebar.classList.contains('open')) {
-      closeSidebar();
-    } else {
-      openSidebar();
-    }
-  });
-  // Optional: close sidebar when clicking outside on mobile
-  document.addEventListener('click', function(e) {
-    if (window.innerWidth > 700) return;
-    if (!sidebar.contains(e.target) && sidebar.classList.contains('open')) {
-      closeSidebar();
-    }
-  });
-  // By default, close sidebar on mobile, open on desktop
-  function handleResize() {
-    if (window.innerWidth > 700) {
-      sidebar.classList.remove('open');
-      sidebarContent.style.display = "block";
-      sidebarToggle.style.display = "none";
-    } else {
-      sidebarContent.style.display = "none";
-      sidebarToggle.style.display = "block";
-    }
-  }
-  window.addEventListener('resize', handleResize);
-  handleResize();
-  // When opening, show content
-  sidebar.addEventListener('transitionend', function() {
-    if (sidebar.classList.contains('open')) {
-      sidebarContent.style.display = "block";
-    } else {
-      sidebarContent.style.display = "none";
-    }
-  });
-  // Also show/hide content on open/close
-  sidebarToggle.addEventListener('click', function() {
-    if (sidebar.classList.contains('open')) {
-      sidebarContent.style.display = "block";
-    } else {
-      sidebarContent.style.display = "none";
-    }
-  });
-}
-
 document.addEventListener("DOMContentLoaded", function() {
-  setupSidebarCollapse();
-
   // Model info update
   function updateModelInfo() {
     const model = document.getElementById('model').value;
